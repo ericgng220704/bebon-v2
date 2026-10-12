@@ -1,4 +1,4 @@
-import { occasions } from "@/content/site";
+import type { Content } from "@/content/types";
 import { FadeIn } from "@/components/motion/FadeIn";
 import { SplitReveal } from "@/components/motion/SplitReveal";
 
@@ -14,7 +14,7 @@ const treatments = [
   "font-display italic text-[clamp(2rem,3vw,2.9rem)]",
 ];
 
-export function Occasions() {
+export function Occasions({ occasions }: { occasions: Content["occasions"] }) {
   return (
     <section data-nav="light" className="px-gutter py-[14vh] text-center md:py-[18vh]">
       <SplitReveal lines={[occasions.title]} className="mx-auto text-display-m" />

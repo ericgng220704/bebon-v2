@@ -1,18 +1,19 @@
 "use client";
 
-import Image from "next/image";
 import { useRef, useState } from "react";
-import { hero, site } from "@/content/site";
+import { heroVideo } from "@/content/site";
+import type { Content } from "@/content/types";
 import { FadeIn } from "@/components/motion/FadeIn";
 import { SplitReveal } from "@/components/motion/SplitReveal";
 import { DashButton } from "@/components/ui/DashButton";
+import { Photo } from "@/components/ui/Photo";
 import { gsap, MOTION_OK, useGSAP } from "@/lib/gsap";
 import { useMediaQuery } from "@/lib/useMediaQuery";
 
 const DESKTOP = "(min-width: 768px)";
 const CUT_EVERY = 1.5;
 
-export function Hero() {
+export function Hero({ hero, dmUrl }: { hero: Content["hero"]; dmUrl: string }) {
   const root = useRef<HTMLElement>(null);
   const desktop = useMediaQuery(DESKTOP);
   const reduced = useMediaQuery("(prefers-reduced-motion: reduce)");
@@ -61,16 +62,7 @@ export function Hero() {
       <div data-hero-media className="absolute inset-0 will-change-transform">
         {frames.map((frame, i) => (
           <div key={i} data-frame="" data-hero-first={i === 0 ? "" : undefined} className="absolute inset-0">
-            <Image
-              src={frame.src}
-              alt={i === 0 ? frame.alt : ""}
-              fill
-              sizes="100vw"
-              preload={i === 0}
-              placeholder="blur"
-              className="object-cover"
-              style={{ objectPosition: frame.position }}
-            />
+            <Photo picture={frame} alt={i === 0 ? frame.alt : ""} sizes="100vw" preload={i === 0} />
           </div>
         ))}
 
@@ -84,7 +76,7 @@ export function Hero() {
 
         <FadeIn afterIntro delay={0.7} className="col-span-12 mt-7 flex flex-col items-start gap-6 md:col-span-4 md:col-start-9 md:mt-0 md:pb-[0.4em]">
           <p className="max-w-[15em] text-note text-balance">{hero.intro}</p>
-          <DashButton first={hero.cta.first} second={hero.cta.second} href={site.instagram.dmUrl} variant="oat" />
+          <DashButton first={hero.cta.first} second={hero.cta.second} href={dmUrl} variant="oat" />
         </FadeIn>
       </div>
     </section>
@@ -98,8 +90,8 @@ function HeroVideo() {
     <video
       className="absolute inset-0 size-full object-cover transition-opacity duration-700"
       style={{ opacity: playing ? 1 : 0 }}
-      src={hero.video.src}
-      poster={hero.video.poster}
+      src={heroVideo.src}
+      poster={heroVideo.poster}
       autoPlay
       muted
       loop

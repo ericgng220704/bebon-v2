@@ -1,9 +1,9 @@
-import { howToOrder, site } from "@/content/site";
+import type { Content } from "@/content/types";
 import { FadeIn } from "@/components/motion/FadeIn";
 import { SplitReveal } from "@/components/motion/SplitReveal";
 import { DashButton } from "@/components/ui/DashButton";
 
-export function HowToOrder() {
+export function HowToOrder({ howToOrder, dmUrl }: { howToOrder: Content["howToOrder"]; dmUrl: string }) {
   return (
     <section id="order" data-nav="light" className="px-gutter pt-[12vh] pb-[16vh] md:pt-[16vh] md:pb-[22vh]">
       <div className="grid grid-cols-12 gap-x-[2rem] gap-y-12">
@@ -32,7 +32,7 @@ export function HowToOrder() {
       </FadeIn>
 
       <FadeIn className="mt-12 flex justify-start md:justify-end">
-        <DashButton first={howToOrder.cta.first} second={howToOrder.cta.second} href={site.instagram.dmUrl} variant="oxblood" />
+        <DashButton first={howToOrder.cta.first} second={howToOrder.cta.second} href={dmUrl} variant="oxblood" />
       </FadeIn>
     </section>
   );

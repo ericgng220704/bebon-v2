@@ -2,7 +2,7 @@
 
 import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useRef, useState, type MouseEvent } from "react";
-import { site } from "@/content/site";
+import { nav } from "@/content/site";
 import { useLenis, useScrollTo } from "@/components/providers/SmoothScroll";
 import { gsap, ScrollTrigger, useGSAP } from "@/lib/gsap";
 import { cn } from "@/lib/cn";
@@ -10,7 +10,7 @@ import { DashButton } from "./DashButton";
 
 type Theme = "light" | "dark";
 
-export function Nav() {
+export function Nav({ dmUrl }: { dmUrl: string }) {
   const ref = useRef<HTMLElement>(null);
   const [theme, setTheme] = useState<Theme>("dark");
   const [hidden, setHidden] = useState(false);
@@ -79,7 +79,7 @@ export function Nav() {
           </a>
 
           <ul className="hidden items-center gap-[1.6em] pt-1 text-small md:flex">
-            {site.nav.map((item) => (
+            {nav.map((item) => (
               <li key={item.href}>
                 <a href={item.href} onClick={(event) => go(event, item.href)} className="relative after:absolute after:inset-x-0 after:-bottom-0.5 after:h-px after:origin-right after:scale-x-0 after:bg-current after:transition-transform after:duration-500 after:ease-out-expo hover:after:origin-left hover:after:scale-x-100">
                   {item.label}
@@ -87,7 +87,7 @@ export function Nav() {
               </li>
             ))}
             <li>
-              <a href={site.instagram.dmUrl} target="_blank" rel="noopener noreferrer" className="rounded-full border border-current px-3.5 py-1.5 transition-colors duration-300 hover:bg-current/10">
+              <a href={dmUrl} target="_blank" rel="noopener noreferrer" className="rounded-full border border-current px-3.5 py-1.5 transition-colors duration-300 hover:bg-current/10">
                 Order
                 <span className="sr-only"> on Instagram (opens in a new tab)</span>
               </a>
@@ -118,7 +118,7 @@ export function Nav() {
             className="fixed inset-0 z-40 flex flex-col justify-between bg-oat px-gutter pt-28 pb-10 text-oxblood md:hidden"
           >
             <ul className="space-y-1">
-              {site.nav.map((item, i) => (
+              {nav.map((item, i) => (
                 <li key={item.href} className="overflow-hidden">
                   <motion.a
                     href={item.href}
@@ -134,7 +134,7 @@ export function Nav() {
               ))}
             </ul>
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6 }}>
-              <DashButton first="Order" second="on Instagram" href={site.instagram.dmUrl} variant="oxblood" />
+              <DashButton first="Order" second="on Instagram" href={dmUrl} variant="oxblood" />
             </motion.div>
           </motion.div>
         )}

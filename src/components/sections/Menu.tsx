@@ -1,19 +1,20 @@
 "use client";
 
 import { AnimatePresence, motion, useMotionValue, useSpring } from "motion/react";
-import Image from "next/image";
 import { useState, type PointerEvent } from "react";
-import { boxes, categories, cookies, formatPrice } from "@/content/cookies";
-import { menuIntro, site } from "@/content/site";
-import type { Cookie, CookieCategory } from "@/content/types";
+import { categories, formatPrice } from "@/content/cookies";
+import type { Box, Content, Cookie, CookieCategory } from "@/content/types";
 import { FadeIn } from "@/components/motion/FadeIn";
 import { SplitReveal } from "@/components/motion/SplitReveal";
 import { DashButton } from "@/components/ui/DashButton";
+import { Photo } from "@/components/ui/Photo";
 import { cn } from "@/lib/cn";
 
 const spring = { stiffness: 260, damping: 28, mass: 0.6 };
 
-export function Menu() {
+type Props = { menu: Content["menu"]; cookies: Cookie[]; boxes: Box[]; dmUrl: string };
+
+export function Menu({ menu: menuIntro, cookies, boxes, dmUrl }: Props) {
   const [filter, setFilter] = useState<CookieCategory | "all">("all");
   const [hovered, setHovered] = useState<Cookie | null>(null);
   const x = useSpring(useMotionValue(0), spring);
@@ -86,7 +87,7 @@ export function Menu() {
       {/* Cursor-following preview, only where there is a real cursor */}
       <motion.div aria-hidden className="pointer-events-none fixed top-0 left-0 z-30 hidden md:pointer-fine:block" style={{ x, y }}>
         <AnimatePresence>
-          {hovered && (
+          {hovered?.image && (
             <motion.div
               key={hovered._id}
               initial={{ opacity: 0, scale: 0.85, rotate: -4 }}
@@ -95,14 +96,7 @@ export function Menu() {
               transition={{ duration: 0.6 }}
               className="absolute -top-[9rem] left-6 h-[18rem] w-[14.5rem] overflow-hidden rounded-[4px] bg-oat shadow-[0_30px_60px_-30px_rgb(55_8_8/0.5)]"
             >
-              <Image
-                src={hovered.image.src}
-                alt=""
-                fill
-                sizes="232px"
-                className="object-cover"
-                style={{ objectPosition: hovered.image.position }}
-              />
+              <Photo picture={hovered.image} alt="" sizes="232px" blur={false} />
             </motion.div>
           )}
         </AnimatePresence>
@@ -132,8 +126,8 @@ export function Menu() {
       </div>
 
       <FadeIn className="mt-[10vh] flex flex-col items-start gap-5 md:flex-row md:items-center md:justify-between">
-        <p className="max-w-[28em] text-note">Know what you want? Send your flavours, box size and pickup day in one message.</p>
-        <DashButton first={menuIntro.cta.first} second={menuIntro.cta.second} href={site.instagram.dmUrl} variant="oxblood" />
+        <p className="max-w-[28em] text-note">{menuIntro.ctaLead}</p>
+        <DashButton first={menuIntro.cta.first} second={menuIntro.cta.second} href={dmUrl} variant="oxblood" />
       </FadeIn>
     </section>
   );
@@ -147,7 +141,7 @@ function CookieRow({ cookie, index }: { cookie: Cookie; index: number }) {
       )}
     >
       <div className={cn("relative aspect-square overflow-hidden rounded-[3px] bg-oat md:hidden", cookie.soldOut && "opacity-60 grayscale")}>
-        <Image src={cookie.image.src} alt="" fill sizes="72px" className="object-cover" style={{ objectPosition: cookie.image.position }} />
+        {cookie.image && <Photo picture={cookie.image} alt="" sizes="72px" blur={false} />}
       </div>
       <span className="hidden font-mono text-small opacity-60 md:col-span-1 md:block">{String(index + 1).padStart(2, "0")}</span>
 

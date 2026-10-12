@@ -1,13 +1,13 @@
 "use client";
 
-import Image from "next/image";
 import { useRef } from "react";
-import { band } from "@/content/site";
+import { Photo } from "@/components/ui/Photo";
+import type { Content } from "@/content/types";
 import { SplitReveal } from "@/components/motion/SplitReveal";
 import { gsap, MOTION_OK, useGSAP } from "@/lib/gsap";
 
 /** Savor's "The future tastes delicious": a full-bleed photo that drifts behind a big cream headline. */
-export function Band() {
+export function Band({ band }: { band: Content["band"] }) {
   const root = useRef<HTMLElement>(null);
 
   useGSAP(
@@ -28,7 +28,7 @@ export function Band() {
   return (
     <section ref={root} data-nav="dark" className="relative h-[95svh] min-h-[32rem] overflow-hidden bg-oxblood text-cream md:h-[110svh]">
       <div data-band-media="" className="absolute inset-x-0 -top-[12%] h-[124%]">
-        <Image src={band.image.src} alt={band.image.alt} fill sizes="100vw" placeholder="blur" className="object-cover" />
+        <Photo picture={band.image} sizes="100vw" />
       </div>
       <div aria-hidden className="absolute inset-0 bg-[linear-gradient(to_top,rgb(20_6_4/0.55),rgb(20_6_4/0.15)_60%,rgb(20_6_4/0.2))]" />
       <div className="absolute inset-x-0 bottom-[16%] px-gutter md:bottom-[24%] md:pl-[11%]">

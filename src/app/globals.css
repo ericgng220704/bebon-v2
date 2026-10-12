@@ -70,8 +70,8 @@
   }
 }
 
-/* Hold the page still while the loader is up. */
-html.is-loading {
+/* Hold the page still while the loader curtain is down. */
+html:has([data-loader="hold"]) {
   overflow: hidden;
 }
 

@@ -1,6 +1,5 @@
 import type { Metadata, Viewport } from "next";
 import { Geist_Mono, Gloock, Instrument_Serif, Inter_Tight } from "next/font/google";
-import { Providers } from "@/components/providers/Providers";
 import "./globals.css";
 
 const interTight = Inter_Tight({
@@ -56,11 +55,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
-      className={`${interTight.variable} ${instrumentSerif.variable} ${gloock.variable} ${geistMono.variable} is-loading antialiased`}
+      className={`${interTight.variable} ${instrumentSerif.variable} ${gloock.variable} ${geistMono.variable} antialiased`}
       suppressHydrationWarning
     >
       <body>
-        <Providers>{children}</Providers>
+        {children}
       </body>
     </html>
   );

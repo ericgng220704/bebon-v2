@@ -1,8 +1,8 @@
 "use client";
 
-import Image from "next/image";
 import { useRef } from "react";
-import { story } from "@/content/site";
+import { Photo } from "@/components/ui/Photo";
+import type { Content } from "@/content/types";
 import { gsap, useGSAP } from "@/lib/gsap";
 
 /**
@@ -49,7 +49,10 @@ function shapeAt(progress: number): Shape {
 // The bubble grows over two scroll ranges: while the section rises into view, then while it is pinned.
 const BEFORE_PIN = KEYS[2][0];
 
-export function Story() {
+// The timeline plays exactly four scenes; fewer photos repeat in order.
+const SCENES = 4;
+
+export function Story({ story }: { story: Content["story"] }) {
   const root = useRef<HTMLElement>(null);
   const stage = useRef<HTMLDivElement>(null);
   const canvas = useRef<HTMLDivElement>(null);
@@ -137,22 +140,15 @@ export function Story() {
   );
 
   const { from, craft, without, future } = story;
+  const scenes = Array.from({ length: SCENES }, (_, i) => story.scenes[i % story.scenes.length]);
 
   return (
     <section id="story" ref={root} data-nav="dark" className="relative bg-cream">
       <div ref={stage} className="relative h-lvh overflow-hidden">
         <div ref={canvas} className="absolute inset-0 bg-cocoa text-cream [text-shadow:0_1px_14px_rgb(20_6_4/0.55)]" style={{ clipPath: "url(#story-bubble)" }}>
-          {story.scenes.map((scene, i) => (
+          {scenes.map((scene, i) => (
             <div key={i} data-scene="" className="absolute inset-0 overflow-hidden">
-              <Image
-                src={scene.src}
-                alt={scene.alt}
-                fill
-                sizes="100vw"
-                placeholder="blur"
-                className="object-cover"
-                style={{ objectPosition: scene.position }}
-              />
+              <Photo picture={scene} sizes="100vw" />
             </div>
           ))}
           <div aria-hidden className="absolute inset-0 bg-[rgb(28_9_6/0.3)]" />

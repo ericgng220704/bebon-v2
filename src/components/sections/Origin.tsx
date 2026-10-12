@@ -1,19 +1,19 @@
 "use client";
 
 import { motion, useMotionValue, useSpring } from "motion/react";
-import Image from "next/image";
 import { useRef, type PointerEvent } from "react";
-import { origin } from "@/content/site";
+import type { Content } from "@/content/types";
 import { FadeIn } from "@/components/motion/FadeIn";
 import { SplitReveal } from "@/components/motion/SplitReveal";
 import { DashButton } from "@/components/ui/DashButton";
+import { Photo } from "@/components/ui/Photo";
 import { gsap, MOTION_OK, ScrollTrigger, useGSAP } from "@/lib/gsap";
 import { useMediaQuery } from "@/lib/useMediaQuery";
 
 const tiltSpring = { stiffness: 110, damping: 16, mass: 0.7 };
 
 /** Savor's "Inspired by / Earth's blueprints": a staggered headline wrapped around a floating cookie. */
-export function Origin() {
+export function Origin({ origin }: { origin: Content["origin"] }) {
   const root = useRef<HTMLElement>(null);
   const reduced = useMediaQuery("(prefers-reduced-motion: reduce)");
   const tiltX = useSpring(useMotionValue(0), tiltSpring);
@@ -80,13 +80,7 @@ export function Origin() {
               {/* The shadow sits on a layer that never rotates, so the light stays put while the cookie turns. */}
               <div data-cookie-float="" className="drop-shadow-[0_34px_38px_rgb(55_8_8/0.22)]">
                 <div data-cookie-spin="" className="relative aspect-square">
-                  <Image
-                    src={origin.image.src}
-                    alt={origin.image.alt}
-                    fill
-                    sizes="(min-width: 768px) 24vw, 60vw"
-                    className="object-contain"
-                  />
+                  <Photo picture={origin.image} sizes="(min-width: 768px) 24vw, 60vw" blur={false} className="object-contain" />
                 </div>
               </div>
             </div>

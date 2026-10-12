@@ -1,8 +1,8 @@
 import { crop, media } from "./media";
-import type { Box, Cookie, CookieCategory } from "./types";
+import type { Box, Cookie, CookieCategory, ImageRef } from "./types";
 
 // Placeholder menu: flavours, notes and prices are stand-ins until the real list is ready.
-export const cookies: Cookie[] = [
+export const cookies: Cookie<ImageRef>[] = [
   {
     _id: "brown-butter-chocolate-chip",
     name: "Brown Butter Chocolate Chip",

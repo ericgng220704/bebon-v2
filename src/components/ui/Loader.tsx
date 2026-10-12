@@ -48,7 +48,7 @@ export function Loader() {
     Promise.race([ready, wait(3500)]).then(() => {
       if (cancelled) return;
       const release = () => {
-        document.documentElement.classList.remove("is-loading");
+        ref.current?.setAttribute("data-loader", "lift");
         finish();
       };
 
@@ -71,5 +71,5 @@ export function Loader() {
 
   if (gone) return null;
 
-  return <div ref={ref} aria-hidden className="fixed inset-0 z-[100] bg-butter" />;
+  return <div ref={ref} data-loader="hold" aria-hidden className="fixed inset-0 z-[100] bg-butter" />;
 }

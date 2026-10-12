@@ -1,14 +1,17 @@
 "use client";
 
 import { useRef, type MouseEvent } from "react";
-import { footer, site } from "@/content/site";
+import { nav, type instagramLinks } from "@/content/site";
+import type { Content } from "@/content/types";
 import { useScrollTo } from "@/components/providers/SmoothScroll";
 import { DashButton } from "@/components/ui/DashButton";
 import { gsap, MOTION_OK, useGSAP } from "@/lib/gsap";
 
 const WORDMARK = "bebon";
 
-export function Footer() {
+type Props = { footer: Content["footer"]; instagram: ReturnType<typeof instagramLinks> };
+
+export function Footer({ footer, instagram }: Props) {
   const root = useRef<HTMLElement>(null);
   const scrollTo = useScrollTo();
 
@@ -42,7 +45,7 @@ export function Footer() {
       <div className="order-2 grid grid-cols-12 gap-x-[2rem] gap-y-12 md:order-1">
         <nav aria-label="Footer" className="col-span-6 md:col-span-2">
           <ul className="text-small">
-            {site.nav.map((item) => (
+            {nav.map((item) => (
               <li key={item.href}>
                 <a href={item.href} onClick={(event) => go(event, item.href)} className="inline-block py-1 hover:underline">
                   {item.label}
@@ -53,12 +56,12 @@ export function Footer() {
         </nav>
         <ul className="col-span-6 text-small md:col-span-2">
           <li>
-            <a href={site.instagram.profileUrl} target="_blank" rel="noopener noreferrer" className="inline-block py-1 hover:underline">
+            <a href={instagram.profileUrl} target="_blank" rel="noopener noreferrer" className="inline-block py-1 hover:underline">
               Instagram
             </a>
           </li>
           <li>
-            <a href={site.instagram.dmUrl} target="_blank" rel="noopener noreferrer" className="inline-block py-1 hover:underline">
+            <a href={instagram.dmUrl} target="_blank" rel="noopener noreferrer" className="inline-block py-1 hover:underline">
               Send a DM
             </a>
           </li>
@@ -66,7 +69,7 @@ export function Footer() {
 
         <div className="col-span-12 row-start-1 flex flex-col items-start gap-7 md:col-span-5 md:col-start-7 md:row-start-auto">
           <p className="max-w-[19em] text-lead">{footer.pitch}</p>
-          <DashButton first={footer.cta.first} second={footer.cta.second} href={site.instagram.dmUrl} variant="oxblood" />
+          <DashButton first={footer.cta.first} second={footer.cta.second} href={instagram.dmUrl} variant="oxblood" />
         </div>
       </div>
 
@@ -82,8 +85,8 @@ export function Footer() {
 
       <div className="order-3 mt-10 flex flex-col gap-2 text-small md:mt-6 md:flex-row md:items-center md:justify-between">
         <p>{footer.smallprint.join(" · ")}</p>
-        <a href={site.instagram.profileUrl} target="_blank" rel="noopener noreferrer" className="inline-block py-1 hover:underline">
-          @{site.instagram.handle}
+        <a href={instagram.profileUrl} target="_blank" rel="noopener noreferrer" className="inline-block py-1 hover:underline">
+          @{instagram.handle}
         </a>
         <p>©Bebon {footer.year}.</p>
       </div>

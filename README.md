@@ -10,19 +10,33 @@ npm run dev     # http://localhost:3000
 npm run build   # production build (static)
 ```
 
-## Editing content
+## Editing content (Sanity)
 
-Everything on the page comes from `src/content/`, so copy changes never touch components:
+Content is edited in **Sanity Studio**, built into the site at `/studio` (live: https://bebon-v2.vercel.app/studio). Publishing a change updates the live site within seconds, with no redeploy.
 
-| File | What lives there |
+| In the Studio | Controls |
 | --- | --- |
-| `site.ts` | Instagram handle, nav, every section's copy, pickup details |
-| `cookies.ts` | Menu items, categories, prices, sold-out flags, box sizes |
-| `media.ts` | Every photo, its alt text, and optional crop position |
+| **Home page** | Every section's text and photos, one tab per section |
+| **Site settings** | Instagram handle (every Order button DMs it), city |
+| **Cookies** | Menu items: name, category, price, sold out, ingredients, photo, order |
+| **Boxes** | Box sizes and prices |
 
-Photos live in `src/assets/images/` (imported statically so Next sizes and blurs them). The phone hero clip is `public/media/hero-portrait.mp4`.
+Photos use Sanity's crop and hotspot tools to choose what stays in frame. A few things stay in code: the nav (it links to section ids), the phone hero video (`public/media/hero-portrait.mp4`), and the layout itself.
 
-These files are shaped like the planned Sanity schemas, so moving to a CMS means replacing the imports with queries.
+### One-time setup
+
+1. **Allow the site to talk to Sanity.** At sanity.io/manage, open the project, then API → CORS origins. Add each of these with **Allow credentials** ticked:
+   - `http://localhost:3000` (plus any other local port you use)
+   - `https://bebon-v2.vercel.app`
+2. **Copy the starting content into Sanity.** Under API → Tokens, create an **Editor** token. Add it to `.env.local` (never commit it):
+   ```
+   SANITY_API_WRITE_TOKEN=sk...
+   ```
+   Then run `npm run seed`. This uploads the photos and creates the documents. It never overwrites edits made in the Studio; `npm run seed -- --force` resets the seeded documents to the built-in content.
+
+### Built-in content
+
+`src/content/` holds the built-in content. It is the seed source, and the page falls back to it for any field that's empty in Sanity, so the site never shows holes. Project id and dataset are in `src/sanity/env.ts`; schemas are in `src/sanity/schemas/`.
 
 ## Brand files
 
@@ -40,7 +54,7 @@ The social card's design lives in `scripts/brand.mjs`. Edit it there and re-run.
 
 ## Before launch
 
-- Set the real Instagram handle in `src/content/site.ts` (`INSTAGRAM_HANDLE`). Every "Order" button DMs it.
+- Set the real Instagram handle (Studio → Site settings). Every "Order" button DMs it.
 - Replace the placeholder menu, prices and pickup schedule.
 - Swap any photos that aren't yours. Several came from the old site, and some show other bakeries' branding (the kraft box lid) or look like stock or Pinterest images.
 

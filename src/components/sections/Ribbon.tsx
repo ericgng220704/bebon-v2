@@ -1,11 +1,11 @@
 "use client";
 
-import Image from "next/image";
 import { useRef, type CSSProperties } from "react";
-import { ribbon } from "@/content/site";
+import type { Content } from "@/content/types";
 import { FadeIn } from "@/components/motion/FadeIn";
 import { SplitReveal } from "@/components/motion/SplitReveal";
 import { DashButton } from "@/components/ui/DashButton";
+import { Photo } from "@/components/ui/Photo";
 import { gsap, MOTION_OK, ScrollTrigger, useGSAP } from "@/lib/gsap";
 
 // Tile widths vary a little so the column reads as a hand-laid ribbon, not a grid.
@@ -15,7 +15,7 @@ const WIDTHS = [1, 0.84, 1.06, 0.78, 0.96, 1.1, 0.82, 0.92, 1.04, 0.8, 1, 0.88, 
  * Savor's snaking column of food photos: the tiles sit flush in one column, and each one slides
  * sideways along a sine wave depending on how high it sits in the viewport, so the column meanders as you scroll.
  */
-export function Ribbon() {
+export function Ribbon({ ribbon }: { ribbon: Content["ribbon"] }) {
   const root = useRef<HTMLElement>(null);
 
   useGSAP(
@@ -91,15 +91,7 @@ export function Ribbon() {
               className="relative aspect-[16/10] w-[calc(var(--w)*52vw)] overflow-hidden md:w-[calc(var(--w)*23vw)]"
               style={{ "--w": WIDTHS[i % WIDTHS.length] } as CSSProperties}
             >
-              <Image
-                src={image.src}
-                alt={image.alt}
-                fill
-                sizes="(min-width: 768px) 24vw, 46vw"
-                placeholder="blur"
-                className="object-cover"
-                style={{ objectPosition: image.position }}
-              />
+              <Photo picture={image} sizes="(min-width: 768px) 24vw, 46vw" />
             </figure>
           ))}
         </div>
