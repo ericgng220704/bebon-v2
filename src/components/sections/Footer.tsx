@@ -71,7 +71,7 @@ export function Footer() {
       </div>
 
       <div data-wordmark="" aria-hidden className="order-1 -mx-[0.5vw] mb-8 overflow-hidden pt-[2vw] pb-[1vw] md:order-2 md:mt-[10vh] md:mb-0">
-        <p className="flex justify-center font-logo text-[33vw] leading-[0.78] tracking-[-0.035em] select-none">
+        <p className="flex justify-center font-logo text-[33vw] leading-[0.78] tracking-[-0.03em] select-none">
           {WORDMARK.split("").map((letter, i) => (
             <span key={i} data-letter="" className="inline-block">
               {letter}

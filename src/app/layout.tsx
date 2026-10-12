@@ -26,7 +26,13 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+// Absolute base for the social image links. Vercel provides the production domain at build time.
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL ??
+  (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : "http://localhost:3000");
+
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: "Bebon — Small-batch cookies in Winnipeg",
   description:
     "Homemade, small-batch cookies baked to order in Winnipeg. Gift-ready boxes for pre-order pickup. Order through Instagram.",
@@ -35,6 +41,10 @@ export const metadata: Metadata = {
     description: "Homemade cookies baked to order, boxed by hand and ready to give.",
     type: "website",
     locale: "en_CA",
+    siteName: "Bebon",
+  },
+  twitter: {
+    card: "summary_large_image",
   },
 };
 
