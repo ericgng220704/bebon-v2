@@ -1,36 +1,48 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Bebon
 
-## Getting Started
+Landing page for Bebon, a small-batch cookie shop in Winnipeg. The structure, type and motion follow savor.it; the content, photos and palette usage are Bebon's own.
 
-First, run the development server:
+## Run it
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev     # http://localhost:3000
+npm run build   # production build (static)
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Editing content
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Everything on the page comes from `src/content/`, so copy changes never touch components:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| File | What lives there |
+| --- | --- |
+| `site.ts` | Instagram handle, nav, every section's copy, pickup details |
+| `cookies.ts` | Menu items, categories, prices, sold-out flags, box sizes |
+| `media.ts` | Every photo, its alt text, and optional crop position |
 
-## Learn More
+Photos live in `src/assets/images/` (imported statically so Next sizes and blurs them). The phone hero clip is `public/media/hero-portrait.mp4`.
 
-To learn more about Next.js, take a look at the following resources:
+These files are shaped like the planned Sanity schemas, so moving to a CMS means replacing the imports with queries.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Before launch
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Set the real Instagram handle in `src/content/site.ts` (`INSTAGRAM_HANDLE`). Every "Order" button DMs it.
+- Replace the placeholder menu, prices and pickup schedule.
+- Swap any photos that aren't yours. Several came from the old site, and some show other bakeries' branding (the kraft box lid) or look like stock or Pinterest images.
 
-## Deploy on Vercel
+## How the motion works
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **Lenis** smooth scroll drives **GSAP ScrollTrigger** (`src/components/providers/SmoothScroll.tsx`).
+- **Loader**: a butter-yellow curtain that lifts once fonts and the first hero frame are ready (`src/components/ui/Loader.tsx`).
+- **Headlines**: SplitText characters rise out of masked lines (`src/components/motion/SplitReveal.tsx`).
+- **Story canvas**: an SVG clip path "bubble" opens into a pinned scene. Lines draw themselves and the canvas folds into a framed picture (`src/components/sections/Story.tsx`).
+- **Ribbon**: photo tiles slide along a sine wave as they scroll (`src/components/sections/Ribbon.tsx`).
+- **Framer Motion** handles component-level motion: the menu filter pill, list transitions, the cursor-following preview, the mobile menu and fade-ins.
+- Everything respects `prefers-reduced-motion`.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Comparing against the reference
+
+```bash
+node scripts/capture.mjs <url> <outDir> [width] [height] [steps]   # screenshot each scroll step
+node scripts/sheet.mjs <outDir> [cols] [perSheet] [cellWidth]      # tile them into contact sheets
+```

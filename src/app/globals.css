@@ -1,26 +1,104 @@
 @import "tailwindcss";
+@import "lenis/dist/lenis.css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  /* Palette lifted from savor.it */
+  --color-cream: #fff9eb;
+  --color-oxblood: #370808;
+  --color-oat: #f0e7d7;
+  --color-oat-deep: #e2d4bc;
+  --color-butter: #f8e47d;
+  --color-cocoa: #522925;
+
+  /* Side margin: 20px on phones up to 40px at 1440px, like Savor's grid */
+  --spacing-gutter: clamp(1.25rem, 0.5rem + 2.2vw, 2.5rem);
+
+  /* Fluid type scale, measured against Savor at 1440px */
+  --text-display-xl: clamp(3.6rem, 10.6vw, 13.5rem);
+  --text-display-xl--line-height: 0.86;
+  --text-display-xl--letter-spacing: -0.012em;
+  --text-display-l: clamp(3.1rem, 8.4vw, 11rem);
+  --text-display-l--line-height: 0.88;
+  --text-display-l--letter-spacing: -0.01em;
+  --text-display-m: clamp(2.6rem, 5.6vw, 7rem);
+  --text-display-m--line-height: 0.9;
+  --text-display-s: clamp(1.9rem, 3.4vw, 3.5rem);
+  --text-display-s--line-height: 0.95;
+  --text-lead: clamp(1.25rem, 0.9rem + 0.95vw, 1.75rem);
+  --text-lead--line-height: 1.3;
+  --text-note: clamp(1rem, 0.75rem + 0.6vw, 1.3rem);
+  --text-note--line-height: 1.35;
+  --text-body: clamp(0.9375rem, 0.85rem + 0.2vw, 1.0625rem);
+  --text-body--line-height: 1.45;
+  --text-small: 0.8125rem;
+  --text-small--line-height: 1.35;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-expo: cubic-bezier(0.87, 0, 0.13, 1);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-inter-tight), helvetica, arial, sans-serif;
+  --font-serif: var(--font-instrument-serif), Georgia, "Times New Roman", serif;
+  --font-logo: var(--font-gloock), Georgia, serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  html {
+    background: var(--color-cream);
+    color: var(--color-oxblood);
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    line-height: var(--text-body--line-height);
+    background: var(--color-cream);
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background: var(--color-butter);
+    color: var(--color-oxblood);
+  }
+
+  :focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 3px;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Hold the page still while the loader is up. */
+html.is-loading {
+  overflow: hidden;
+}
+
+/* The custom scroll thumb replaces the native bar on mouse devices. */
+@media (pointer: fine) {
+  html.has-scroll-thumb {
+    scrollbar-width: none;
+  }
+  html.has-scroll-thumb::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Split headings stay invisible until GSAP has wrapped their characters.
+   Opacity, not visibility, so screen readers can still reach headings that haven't been split yet. */
+[data-split]:not(.is-split) {
+  opacity: 0;
+}
+
+/* Give masked lines room for ascenders and descenders without changing layout. */
+.split-line-mask {
+  padding: 0.12em 0.04em 0.2em;
+  margin: -0.12em -0.04em -0.2em;
+}
+
+@utility font-display {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-kerning: normal;
 }
